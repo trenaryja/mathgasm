@@ -1,0 +1,42 @@
+{
+	"author": "Justin Trenary",
+	"bugs": {
+		"url": "https://github.com/trenaryja/mathgasm/issues"
+	},
+	"dependencies": {
+		"@material-ui/core": "^4.11.2",
+		"gatsby": "^2.29.1",
+		"gatsby-plugin-sass": "^2.8.0",
+		"node-sass": "^4.14.1",
+		"react": "^17.0.1",
+		"react-canvas-draw": "^1.1.1",
+		"react-color": "^2.19.3",
+		"react-dom": "^17.0.1",
+		"typeface-roboto": "^1.1.13"
+	},
+	"description": "",
+	"homepage": "https://github.com/trenaryja/mathgasm#readme",
+	"keywords": [
+		"math",
+		"chart",
+		"graph",
+		"simple",
+		"react"
+	],
+	"license": "MIT",
+	"main": "index.js",
+	"name": "mathgasm",
+	"private": true,
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/trenaryja/mathgasm.git"
+	},
+	"scripts": {
+		"build": "gatsby build",
+		"clean": "gatsby clean",
+		"develop": "gatsby develop",
+		"format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
+		"start": "npm run develop"
+	},
+	"version": "1.0.0"
+}
