@@ -1,4 +1,4 @@
-import defaults from "../utils/defaults";
+import { defaults } from "../utils/utils";
 
 export const app = {
 	display: "grid",
@@ -13,6 +13,7 @@ export const fieldGrid = {
 	gridTemplateColumns: "1fr 1fr",
 	width: "100%",
 	gap: "1em",
+	justifyItems: "center",
 };
 
 export const canvasButtons = {

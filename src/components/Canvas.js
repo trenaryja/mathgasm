@@ -1,6 +1,6 @@
 import React from "react";
 import CanvasDraw from "react-canvas-draw";
-import defaults from "../utils/defaults";
+import { defaults } from "../utils/utils";
 
 export default (props) => {
 	return (

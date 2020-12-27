@@ -9,18 +9,19 @@
 -   [x] Export to PNG
 -   [x] Chart Title
 -   [x] Axis Labels
--   [ ] Scale Labels
--   [ ] Background Color option (toggle brush and background selector)
--   [ ] Show ticks option
+-   [x] Scale Labels
+-   [x] Toggle Background Transparency
+-   [x] Brush Transparency
+-   [x] Positive XY option
+-   [ ] Localstorage save
 -   [ ] Predefined Scale options
 -   [ ] Linear Plot option
--   [ ] Positive 2D option
 -   [ ] Positive and Negative 2D option
+-   [ ] Show ticks option
 -   [ ] Implement entirely SVG option
--   [ ] Redo Button
 -   [ ] Add Text
 -   [ ] Add Sprites
--   [ ] Localstorage save and slideshow and export
+-   [ ] Redo Button
 -   [ ] Font selector
 -   [ ] Ctrl-Z When Canvas is focused
 

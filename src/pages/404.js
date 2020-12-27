@@ -1,5 +1,5 @@
 import React from "react";
 
-export default function Home() {
-	return <div>Hello world!</div>;
-}
+export default () => {
+	return <div>404 Page Not Found!</div>;
+};

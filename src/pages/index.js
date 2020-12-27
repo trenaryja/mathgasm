@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import Canvas from "../components/Canvas";
 import {
 	Slider,
@@ -6,10 +7,12 @@ import {
 	CssBaseline,
 	TextField,
 	Button,
+	FormControlLabel,
+	Switch,
 } from "@material-ui/core";
 import { SketchPicker } from "react-color";
-import { canvasArray2Png, wrapText } from "../utils/canvas.utils";
-import defaults from "../utils/defaults";
+import { canvasArray2Png, drawPositiveXY } from "../utils/canvas.utils";
+import { defaults } from "../utils/utils";
 import * as styles from "../styles/styles";
 
 export default () => {
@@ -21,6 +24,9 @@ export default () => {
 	const [yAxisTitle, setYAxisTitle] = useState("");
 	const [xAxisMaxLabel, setXAxisMaxLabel] = useState("");
 	const [yAxisMaxLabel, setYAxisMaxLabel] = useState("");
+	const [showBackground, setShowBackground] = useState(
+		defaults.showBackground,
+	);
 
 	useEffect(() => {
 		drawChartBase();
@@ -39,10 +45,11 @@ export default () => {
 
 	const handleExport = () => {
 		const canvasElements = [...getCanvasElements().slice(1)].reverse();
-		canvasArray2Png(canvasElements);
+		canvasArray2Png(canvasElements, showBackground);
 	};
 
-	const handleBrushColorChange = (color) => setBrushColor(color.hex);
+	const handleBrushColorChange = (color) =>
+		setBrushColor(color.hex + defaults.dec2Hex(color.rgb.a));
 
 	const handleBrushRadiusChange = (_e, value) => setBrushRadius(value);
 
@@ -56,74 +63,33 @@ export default () => {
 
 	const handleYAxisMaxLabelChange = (e) => setYAxisMaxLabel(e.target.value);
 
+	const handleShowBackGroundChange = (e) =>
+		setShowBackground(e.target.checked);
+
 	const drawChartBase = () => {
 		setTimeout(() => {
 			const baseCanvas = getCanvasElement(3);
+			baseCanvas.parentElement.style.background = showBackground
+				? defaults.backgroundColor
+				: null;
 			const ctx = baseCanvas.getContext("2d");
 			ctx.clearRect(0, 0, defaults.size, defaults.size);
-			drawTitle(ctx);
-			drawAxes(ctx);
+			drawPositiveXY(
+				ctx,
+				chartTitle,
+				xAxisTitle,
+				yAxisTitle,
+				xAxisMaxLabel,
+				yAxisMaxLabel,
+			);
 		}, 0);
-	};
-
-	const drawTitle = (ctx) => {
-		const fontSize = defaults.size / 20;
-		ctx.font = defaults.font(fontSize);
-		ctx.textAlign = "center";
-		wrapText(
-			ctx,
-			chartTitle,
-			defaults.size / 2,
-			fontSize,
-			defaults.size - defaults.size / 5,
-			fontSize,
-		);
-	};
-
-	const drawAxes = (ctx) => {
-		const inset = defaults.size / 7.5;
-		const tickOffset = defaults.size / 50;
-		const bottom = defaults.size - inset;
-		const middle = defaults.size / 2;
-
-		ctx.beginPath();
-		ctx.moveTo(inset - tickOffset, inset);
-		ctx.lineTo(inset + tickOffset, inset);
-		ctx.moveTo(inset, inset);
-		ctx.lineTo(inset, bottom);
-		ctx.lineTo(bottom, bottom);
-		ctx.moveTo(bottom, bottom - tickOffset);
-		ctx.lineTo(bottom, bottom + tickOffset);
-		ctx.stroke();
-
-		const fontSize = defaults.size / 30;
-		ctx.font = defaults.font(fontSize);
-		ctx.textAlign = "center";
-		const axisTitleMaxLength = defaults.size - inset * 2;
-
-		ctx.fillText(
-			xAxisTitle,
-			middle,
-			defaults.size - tickOffset,
-			axisTitleMaxLength,
-		);
-
-		ctx.translate(middle, middle);
-		ctx.rotate((-90 * Math.PI) / 180);
-		ctx.translate(-middle, -middle);
-
-		ctx.fillText(
-			yAxisTitle,
-			middle,
-			fontSize + tickOffset,
-			axisTitleMaxLength,
-		);
-
-		ctx.setTransform(1, 0, 0, 1, 0, 0);
 	};
 
 	return (
 		<ThemeProvider theme={defaults.theme}>
+			<Helmet>
+				<title>M A T H G A S M</title>
+			</Helmet>
 			<div style={styles.app}>
 				<CssBaseline />
 				<TextField
@@ -143,22 +109,30 @@ export default () => {
 						onChange={handleYAxisChange}
 					/>
 					<TextField
-						disabled
 						value={xAxisMaxLabel}
 						label="X Axis Max Label"
 						onChange={handleXAxisMaxLabelChange}
 					/>
 					<TextField
-						disabled
 						value={yAxisMaxLabel}
 						label="Y Axis Max Label"
 						onChange={handleYAxisMaxLabelChange}
 					/>
 				</div>
 
+				<FormControlLabel
+					label="Show Background"
+					control={
+						<Switch
+							checked={showBackground}
+							onChange={handleShowBackGroundChange}
+							color="primary"
+						/>
+					}
+				/>
+
 				<SketchPicker
 					width={defaults.size / 2}
-					disableAlpha
 					presetColors={[]}
 					color={brushColor}
 					onChange={handleBrushColorChange}
