@@ -59,7 +59,7 @@ export const defaults = {
 	backgroundColor: theme.palette.primary.contrastText,
 	showBackground: true,
 	brushWidth: 1,
-	size: Math.min(window.innerWidth, 500),
+	size: 500,
 	font: font,
 	dec2Hex: dec2Hex,
 	theme: theme,
