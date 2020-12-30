@@ -1,6 +1,8 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
+import chroma from "chroma-js";
 import Canvas from "../components/Canvas";
+import ColorPicker from "../components/ColorPicker";
 import {
 	Slider,
 	ThemeProvider,
@@ -10,14 +12,20 @@ import {
 	FormControlLabel,
 	Switch,
 } from "@material-ui/core";
-import { SketchPicker } from "react-color";
-import { canvasArray2Png, drawPositiveXY } from "../utils/canvas.utils";
+import {
+	canvasArray2Png,
+	drawPositiveXY,
+	getCanvasElement,
+	getCanvasElements,
+} from "../utils/canvas.utils";
 import { defaults } from "../utils/utils";
 import * as styles from "../styles/styles";
 
 export default () => {
 	const canvas = useRef(null);
-	const [brushColor, setBrushColor] = useState(defaults.brushColor);
+	const [brushColor, setBrushColor] = useState(
+		chroma(defaults.brushColor).hsv().concat(1),
+	);
 	const [brushRadius, setBrushRadius] = useState(defaults.brushWidth);
 	const [chartTitle, setChartTitle] = useState("");
 	const [xAxisTitle, setXAxisTitle] = useState("");
@@ -27,44 +35,18 @@ export default () => {
 	const [showBackground, setShowBackground] = useState(
 		defaults.showBackground,
 	);
+	const [h, s, v, a] = brushColor;
+	const brushColorHex = chroma({ h, s, v }).alpha(a).hex("rgba");
 
 	useEffect(() => {
 		drawChartBase();
 		return drawChartBase;
 	});
 
-	const getCanvasElements = () =>
-		Array.from(document.getElementsByTagName("canvas"));
-
-	const getCanvasElement = (layerIndex) =>
-		getCanvasElements()[layerIndex || 1];
-
-	const handleClear = () => canvas.current.clear();
-
-	const handleUndo = () => canvas.current.undo();
-
 	const handleExport = () => {
 		const canvasElements = [...getCanvasElements().slice(1)].reverse();
 		canvasArray2Png(canvasElements, showBackground);
 	};
-
-	const handleBrushColorChange = (color) =>
-		setBrushColor(color.hex + defaults.dec2Hex(color.rgb.a));
-
-	const handleBrushRadiusChange = (_e, value) => setBrushRadius(value);
-
-	const handleTitleChange = (e) => setChartTitle(e.target.value);
-
-	const handleXAxisChange = (e) => setXAxisTitle(e.target.value);
-
-	const handleYAxisChange = (e) => setYAxisTitle(e.target.value);
-
-	const handleXAxisMaxLabelChange = (e) => setXAxisMaxLabel(e.target.value);
-
-	const handleYAxisMaxLabelChange = (e) => setYAxisMaxLabel(e.target.value);
-
-	const handleShowBackGroundChange = (e) =>
-		setShowBackground(e.target.checked);
 
 	const drawChartBase = () => {
 		setTimeout(() => {
@@ -95,28 +77,28 @@ export default () => {
 				<TextField
 					value={chartTitle}
 					label="Chart Title"
-					onChange={handleTitleChange}
+					onChange={(e) => setChartTitle(e.target.value)}
 				/>
 				<div style={styles.fieldGrid}>
 					<TextField
 						value={xAxisTitle}
 						label="X Axis Title"
-						onChange={handleXAxisChange}
+						onChange={(e) => setXAxisTitle(e.target.value)}
 					/>
 					<TextField
 						value={yAxisTitle}
 						label="Y Axis Title"
-						onChange={handleYAxisChange}
+						onChange={(e) => setYAxisTitle(e.target.value)}
 					/>
 					<TextField
 						value={xAxisMaxLabel}
 						label="X Axis Max Label"
-						onChange={handleXAxisMaxLabelChange}
+						onChange={(e) => setXAxisMaxLabel(e.target.value)}
 					/>
 					<TextField
 						value={yAxisMaxLabel}
 						label="Y Axis Max Label"
-						onChange={handleYAxisMaxLabelChange}
+						onChange={(e) => setYAxisMaxLabel(e.target.value)}
 					/>
 				</div>
 
@@ -125,30 +107,36 @@ export default () => {
 					control={
 						<Switch
 							checked={showBackground}
-							onChange={handleShowBackGroundChange}
+							onChange={(e) =>
+								setShowBackground(e.target.checked)
+							}
 							color="primary"
 						/>
 					}
 				/>
 
-				<SketchPicker
-					width={defaults.size / 2}
-					presetColors={[]}
+				<ColorPicker
 					color={brushColor}
-					onChange={handleBrushColorChange}
+					onChange={setBrushColor}
+					showBackground={showBackground}
 				/>
 
-				<Slider min={1} onChange={handleBrushRadiusChange} />
+				<Slider
+					min={1}
+					onChange={(_e, value) => setBrushRadius(value)}
+				/>
 
 				<Canvas
-					brushColor={brushColor}
+					brushColor={brushColorHex}
 					brushRadius={brushRadius}
 					reference={canvas}
 				/>
 
 				<div style={styles.canvasButtons}>
-					<Button onClick={handleClear}>Clear</Button>
-					<Button onClick={handleUndo}>Undo</Button>
+					<Button onClick={() => canvas.current.clear()}>
+						Clear
+					</Button>
+					<Button onClick={() => canvas.current.undo()}>Undo</Button>
 					<Button onClick={handleExport}>Export</Button>
 				</div>
 			</div>

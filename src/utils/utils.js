@@ -1,6 +1,6 @@
 import { createMuiTheme } from "@material-ui/core";
 
-const theme = createMuiTheme({
+export const theme = createMuiTheme({
 	palette: {
 		type: "dark",
 		primary: {
@@ -44,14 +44,7 @@ const theme = createMuiTheme({
 	},
 });
 
-const font = (size) => `${size}px Roboto`;
-
-const dec2Hex = (x, padding) => {
-	let hex = Math.round(Number(x * 255)).toString(16);
-	padding = padding ? 2 : padding;
-	while (hex.length < padding) hex = "0" + hex;
-	return hex;
-};
+export const font = (size) => `${size}px Roboto`;
 
 export const defaults = {
 	filename: "mathgasm.png",
@@ -60,8 +53,6 @@ export const defaults = {
 	showBackground: true,
 	brushWidth: 1,
 	size: 500,
-	font: font,
-	dec2Hex: dec2Hex,
 	theme: theme,
 	variant: "outlined",
 };

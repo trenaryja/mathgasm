@@ -1,4 +1,10 @@
-import { defaults } from "./utils";
+import { defaults, font } from "./utils";
+
+export const getCanvasElements = () =>
+	Array.from(document.getElementsByTagName("canvas"));
+
+export const getCanvasElement = (layerIndex) =>
+	getCanvasElements()[layerIndex || 1];
 
 export const canvas2Png = (canvas, filename) => {
 	const a = document.createElement("a");
@@ -72,7 +78,7 @@ export const drawPositiveXY = (
 	ctx.lineTo(bottom, bottom + tickOffset);
 	ctx.stroke();
 
-	ctx.font = defaults.font(chartTitleFontSize);
+	ctx.font = font(chartTitleFontSize);
 	wrapText(
 		ctx,
 		chartTitle,
@@ -82,7 +88,7 @@ export const drawPositiveXY = (
 		chartTitleFontSize,
 	);
 
-	ctx.font = defaults.font(axisTitleFontSize);
+	ctx.font = font(axisTitleFontSize);
 	ctx.fillText(
 		xAxisTitle,
 		middle,
@@ -90,7 +96,7 @@ export const drawPositiveXY = (
 		axisTitleMaxLength,
 	);
 
-	ctx.font = defaults.font(axisMaxLabelFontSize);
+	ctx.font = font(axisMaxLabelFontSize);
 	ctx.fillText(
 		xAxisMaxLabel,
 		bottom,
@@ -102,10 +108,10 @@ export const drawPositiveXY = (
 	ctx.rotate((-90 * Math.PI) / 180);
 	ctx.translate(-middle, -middle);
 
-	ctx.font = defaults.font(axisTitleFontSize);
+	ctx.font = font(axisTitleFontSize);
 	ctx.fillText(yAxisTitle, middle, axisTitleFontSize, axisTitleMaxLength);
 
-	ctx.font = defaults.font(axisMaxLabelFontSize);
+	ctx.font = font(axisMaxLabelFontSize);
 	ctx.fillText(
 		yAxisMaxLabel,
 		bottom,
