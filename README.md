@@ -24,8 +24,3 @@
 -   [ ] Redo Button
 -   [ ] Font selector
 -   [ ] Ctrl-Z When Canvas is focused
-
-### Known Bugs
-
--   ColorPicker Component does not apply calculated styles immediately to sliders
--   Gatsby is out of sync with React tooling https://github.com/gatsbyjs/gatsby/issues/11934

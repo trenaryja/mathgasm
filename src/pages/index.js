@@ -21,7 +21,7 @@ import {
 import { defaults } from "../utils/utils";
 import * as styles from "../styles/styles";
 
-export default () => {
+const Index = () => {
 	const canvas = useRef(null);
 	const [brushColor, setBrushColor] = useState(
 		chroma(defaults.brushColor).hsv().concat(1),
@@ -143,3 +143,5 @@ export default () => {
 		</ThemeProvider>
 	);
 };
+
+export default Index;

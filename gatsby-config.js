@@ -14,5 +14,11 @@ module.exports = {
 				icon: "src/images/favicon.png",
 			},
 		},
+		{
+			resolve: "gatsby-plugin-material-ui",
+			options: {
+				pathToTheme: "src/utils/theme.js",
+			},
+		},
 	],
 };

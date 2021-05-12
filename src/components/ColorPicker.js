@@ -15,10 +15,16 @@ const hueSliderStyles = makeStyles({
 	},
 	rail: {
 		opacity: 1,
-		background: `linear-gradient(to right, #ff0000 0%, #ffff00 17%, #00ff00 33%, #00ffff 50%, #0000ff 67%, #ff00ff 83%, #ff0000 100%)`,
-	},
-	track: {
-		display: "none",
+		background: `linear-gradient(
+			to right,
+			#ff0000 0%,
+			#ffff00 17%,
+			#00ff00 33%,
+			#00ffff 50%,
+			#0000ff 67%,
+			#ff00ff 83%,
+			#ff0000 100%
+		)`,
 	},
 });
 
@@ -29,10 +35,7 @@ const gradientSliderStyles = makeStyles({
 	rail: {
 		opacity: 1,
 		background: (props) =>
-			`linear-gradient(to right, ${props.leftColor}, ${props.rightColor}`, //TODO: Fix these styles not applying on first render
-	},
-	track: {
-		display: "none",
+			`linear-gradient(to right, ${props.leftColor}, ${props.rightColor})`, //TODO: Fix these styles not applying on first render
 	},
 });
 
@@ -101,6 +104,7 @@ export default (props) => {
 		>
 			<Slider
 				classes={hueSliderClasses}
+				track={false}
 				max={360}
 				value={h}
 				onChange={(_e, value) => {
@@ -109,6 +113,7 @@ export default (props) => {
 			/>
 			<Slider
 				classes={saturationSliderClasses}
+				track={false}
 				value={s * 100}
 				onChange={(_e, value) =>
 					handleChange(options.saturation, value)
@@ -116,11 +121,13 @@ export default (props) => {
 			/>
 			<Slider
 				classes={valueSliderClasses}
+				track={false}
 				value={v * 100}
 				onChange={(_e, value) => handleChange(options.value, value)}
 			/>
 			<Slider
 				classes={alphaSliderClasses}
+				track={false}
 				value={a * 100}
 				onChange={(_e, value) => handleChange(options.alpha, value)}
 			/>
